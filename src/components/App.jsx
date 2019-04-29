@@ -5,8 +5,10 @@ import Footer from "./Footer.jsx";
 import Body from "./Body.jsx";
 
 import {
-  getUserList,
-  getSongs
+  getSongs,
+  getGenres,
+  getArtists,
+  getLabels
 } from "../util/service_helper";
 
 class App extends Component {
@@ -16,7 +18,10 @@ class App extends Component {
     this.state = {
       date: new Date(),
       userList: [],
-      songList: []
+      songList: [],
+      genreList: [],
+      artistList: [],
+      labelList: []
     };
   }
 
@@ -26,25 +31,35 @@ class App extends Component {
       1000
     );
     
-    this.getUsers();
-    this.getSongs();
-    
+    this.getSongs();  
+    this.getGenres();
+    this.getArtists();
+    this.getLabels();
   }
 
-  // Service methos
-
-  getUsers() {
-    getUserList().then(res => {
-      console.log("Response = " + res)
-      this.setState({userList : res.data.data});
-      console.log("USERS = " + this.state.userList)
-    })
-  }
-
+  // Service methods
   getSongs() {
     getSongs().then(res => {
       console.log("Songs: " + JSON.stringify(res.data));
       this.setState({songList: res.data});
+    });
+  }
+
+  getGenres() {
+    getGenres().then(res => {
+      this.setState({genreList: res.data});
+    });
+  }
+
+  getArtists() {
+    getArtists().then(res => {
+      this.setState({artistList: res.data});
+    });
+  }
+
+  getLabels() {
+    getLabels().then(res => {
+      this.setState({labelList: res.data});
     })
   }
 
@@ -58,7 +73,7 @@ class App extends Component {
     return (
       <div>
         <Header date={this.state.date.toLocaleTimeString() } />
-        <Body songList={this.state.songList} />
+        <Body songList={this.state.songList} genreList={this.state.genreList} labelList={this.state.labelList} artistList={this.state.artistList}  />
         <Footer />
       </div>
     );

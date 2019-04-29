@@ -1,15 +1,31 @@
-import { getUserListURL, getSongsURL } from "./service_util";
 import axios from "axios";
 
-const getUserList = () => {
-    return axios.get(getUserListURL);
-}
+import {
+    getSongsURL,
+    getGenresURL,
+    getArtistsURL,
+    getLabelsURL
+} from "./service_util";
 
 const getSongs = () => {
     return axios.get(getSongsURL);
 }
 
+const getGenres = () => {
+    return axios.get(getGenresURL);
+}
+
+const getArtists = () => {
+    return axios.get(getArtistsURL);
+}
+
+const getLabels = () => {
+    return axios.get(getLabelsURL);
+}
+
 export {
-    getUserList,
-    getSongs
+    getSongs,
+    getGenres,
+    getArtists,
+    getLabels,
 }
