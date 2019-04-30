@@ -4,7 +4,8 @@ class Header extends Component {
     render() {
         return (
             <div id="div_header" className="header">
-                <h3>SONG SING SANG SUNG {this.props.date}</h3>
+                <span className="pull-right"> {this.props.date}</span>
+                <h3>SONG SING SANG SUNG</h3>
             </div>
         )
     };
