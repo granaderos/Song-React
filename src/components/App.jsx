@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
 import '../css/App.css';
 import Header from "./Header.jsx";
 import Footer from "./Footer.jsx";
 import Body from "./Body.jsx";
+
+import $ from 'jquery';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faStroopwafel, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
+
 
 import {
   getSongs,
@@ -10,6 +17,14 @@ import {
   getArtists,
   getLabels
 } from "../util/service_helper";
+import { timingSafeEqual } from 'crypto';
+
+library.add(faStroopwafel)
+library.add(faTrash)
+library.add(faEdit)
+window.$ = window.jQuery = $;
+
+const base_api = 'http://localhost:8080/rest-song/rest/';
 
 class App extends Component {
   constructor(props) {
@@ -21,7 +36,8 @@ class App extends Component {
       songList: [],
       genreList: [],
       artistList: [],
-      labelList: []
+      labelList: [],
+      song: {}
     };
   }
 
@@ -38,26 +54,43 @@ class App extends Component {
   }
 
   // Service methods
-  getSongs() {
+
+  deleteSong = songId => {
+    console.log("SONG TO DELETE " + songId)
+    axios.delete(base_api+"songs/delete/"+songId)
+      .then(function(res) {
+        console.log("DELETED song with ID " + songId + " response = " + res)
+        $("#song_"+songId).remove();
+      });
+  }
+
+  getSong = songId => {
+    axios.get(base_api+"songs/"+songId)
+      .then(res => {
+        this.setState({song: res.data});
+      })
+      return this.state.song;
+  }
+
+  getSongs = () => {
     getSongs().then(res => {
-      console.log("Songs: " + JSON.stringify(res.data));
       this.setState({songList: res.data});
     });
   }
 
-  getGenres() {
+  getGenres = () => {
     getGenres().then(res => {
       this.setState({genreList: res.data});
     });
   }
 
-  getArtists() {
+  getArtists = () => {
     getArtists().then(res => {
       this.setState({artistList: res.data});
     });
   }
 
-  getLabels() {
+  getLabels = () => {
     getLabels().then(res => {
       this.setState({labelList: res.data});
     })
@@ -73,7 +106,7 @@ class App extends Component {
     return (
       <div>
         <Header date={this.state.date.toLocaleTimeString() } />
-        <Body songList={this.state.songList} genreList={this.state.genreList} labelList={this.state.labelList} artistList={this.state.artistList}  />
+        <Body getSong={this.getSong} getSongs={this.getSongs} deleteSong={this.deleteSong} songList={this.state.songList} genreList={this.state.genreList} labelList={this.state.labelList} artistList={this.state.artistList}  />
         <Footer />
       </div>
     );

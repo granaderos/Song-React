@@ -1,6 +1,11 @@
 import React, { Component } from "react"
 import axios from "axios";
 
+import $ from 'jquery';
+window.$ = window.jQuery = $;
+
+const base_api = 'http://localhost:8080/rest-song/rest';
+
 class SongForm extends Component {
 
     constructor(props) {
@@ -11,17 +16,15 @@ class SongForm extends Component {
             artist: '',
             label: '',
             date: '',
-            genre: ''
+            genre: '',
+            actionTaken: ''
         }
 
-        
-        this.handleSubmit = this.handleSubmit.bind(this);
+        //this.handleSubmit = this.handleSubmit.bind(this);
         this.onChangeArtist = this.onChangeArtist.bind(this);
         this.onChangeGenre = this.onChangeGenre.bind(this);
         this.onChangeLabel = this.onChangeLabel.bind(this);
     }
-
-    componentDidMount() {}
 
     onChangeGenre(e) {
         this.setState({
@@ -39,7 +42,7 @@ class SongForm extends Component {
         this.setState({ artist: e.target.value });
     }
 
-    async handleSubmit(e) {
+    handleSubmit = (e) => {
         e.preventDefault();
 
         var songToAdd = {
@@ -50,33 +53,25 @@ class SongForm extends Component {
             "genre": this.state.genre
         }
 
+        console.log('sample');
+        console.log(this);
+
         const config = {
             headers : {
                 'Content-Type' : 'application/json'
-
             }
         }
-        console.log("SONG = " + JSON.stringify(songToAdd));
-        axios.post("http://localhost:8080/rest-song/rest/songs/add", songToAdd, config)
-            .then(function(response) {
-                console.log("RESPONSE ADD = " + JSON.stringify(response));
-
-                if (response.data.code === 200) {
-                    console.log("adding successfull");
-                }
-                else {
-                    console.log("some error ocurred", response.data.code);
-                }
-                window.location.reload();
-            })
-            .catch(function(error) {
-                console.log(error);
-        });
+        // console.log("SONG = " + JSON.stringify(songToAdd));
+        axios.post(base_api+"/songs/add", songToAdd, config)
+        .then(
+            res => {
+                this.props.getSongs();
+                
+            }
+        );
     }
 
     render() {
-
-
         let genreList = this.props.genreList;
         let labelList = this.props.labelList;
         let artistList = this.props.artistList;
@@ -91,7 +86,7 @@ class SongForm extends Component {
                     {
                         artistList.map(artist => {
                             return (
-                                <option value={artist.name}>{artist.name}</option>
+                                <option key={artist.id.toString()} value={artist.name}>{artist.name}</option>
                             );
                         })
                     }
@@ -107,7 +102,7 @@ class SongForm extends Component {
                     {
                         labelList.map(label => {
                             return (
-                                <option value={label.name}>{label.name}</option>
+                                <option key={label.id.toString()} value={label.name}>{label.name}</option>
                             );
                         })
                     }
@@ -124,7 +119,7 @@ class SongForm extends Component {
                     {
                         genreList.map(genre => {
                             return (
-                                <option value={genre.name}>{genre.name}</option>
+                                <option key={genre.id.toString()} value={genre.name}>{genre.name}</option>
                             );
                         })
                     }
