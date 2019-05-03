@@ -10,12 +10,22 @@ class Body extends Component {
                 <div className="row">
                     <div className="col-md-5">
                         <h3>Add Song</h3>
-                        <SongForm saveUpdatedSong={this.props.saveUpdatedSong} addSong={this.props.addSong} handleChangeData={this.props.handleChangeData} getSongs={this.props.getSongs} genreList={this.props.genreList} labelList={this.props.labelList} artistList={this.props.artistList} />
+                        <SongForm 
+                            clearForm={this.props.clearForm} 
+                            saveUpdatedSong={this.props.saveUpdatedSong} 
+                            addSong={this.props.addSong} 
+                            handleChangeData={this.props.handleChangeData} 
+                            genreList={this.props.genreList} 
+                            labelList={this.props.labelList} 
+                            artistList={this.props.artistList} />
                     </div>
 
                     <div className="col-md-6">
                         <h3>List of Songs</h3>
-                        <SongTable song={this.props.song} getSong={this.props.getSong} deleteSong={this.props.deleteSong} songList={this.props.songList} />
+                        <SongTable 
+                            getSong={this.props.getSong} 
+                            deleteSong={this.props.deleteSong} 
+                            songList={this.props.songList} />
                     </div>
                 </div>
                 <br />

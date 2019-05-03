@@ -61,6 +61,7 @@ class App extends Component {
     this.getGenres();
     this.getArtists();
     this.getLabels();
+
   }
 
   // Service methods
@@ -68,10 +69,10 @@ class App extends Component {
   clearForm = e => {
     $("#id").val("");
     $("#title").val("");
-    $("#artist").val("");
-    $("#label").val("");
+    $("#artist").val("--- select ---");
+    $("#label").val("--- select ---");
     $("#date").val("");
-    $("#genre").val("");
+    $("#genre").val("--- select ---");
 
   }
 
@@ -146,6 +147,10 @@ class App extends Component {
           $("#label").val(song.label);
           $("#date").val(song.date);
           $("#genre").val(song.genre);
+
+          $("#btnSave").show();
+          $("#btnCancelEdit").show();
+          $("#btnAdd").hide();
         }
 
       });
@@ -185,7 +190,17 @@ class App extends Component {
     return (
       <div>
         <Header date={this.state.date.toLocaleTimeString() } />
-        <Body saveUpdatedSong={this.saveUpdatedSong} addSong={this.addSong} handleChangeData={this.handleChangeData} song={this.state.song} getSong={this.getSong} getSongs={this.getSongs} deleteSong={this.deleteSong} songList={this.state.songList} genreList={this.state.genreList} labelList={this.state.labelList} artistList={this.state.artistList}  />
+        <Body clearForm={this.clearForm} 
+              saveUpdatedSong={this.saveUpdatedSong} 
+              addSong={this.addSong} 
+              handleChangeData={this.handleChangeData}
+              getSong={this.getSong} 
+              getSongs={this.getSongs} 
+              deleteSong={this.deleteSong} 
+              songList={this.state.songList} 
+              genreList={this.state.genreList} 
+              labelList={this.state.labelList} 
+              artistList={this.state.artistList}  />
         <Footer />
       </div>
     );

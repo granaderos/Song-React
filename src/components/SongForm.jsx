@@ -63,7 +63,8 @@ class SongForm extends Component {
                     <input required onChange={this.props.handleChangeData} type="text" className="form-control" name="date" id="date" />
                     
                     <label>Genre</label>
-                    <select multiple required onChange={this.props.handleChangeData} className="form-control" name="genre" id="genre">
+                    <select required onChange={this.props.handleChangeData} className="form-control" name="genre" id="genre">
+                        <option>--- select ---</option>
                         {
                             genreList.map(genre => {
                                 return (
@@ -77,7 +78,7 @@ class SongForm extends Component {
                 <button id="btnSave" className="btn btn-primary" onClick={this.props.saveUpdatedSong}>Save</button>&nbsp;&nbsp;
                 <button id="btnCancelEdit" className="btn btn-danger" onClick={this.cancelSave}>Cancel</button>
                 <button id="btnAdd" className="btn btn-primary" onClick={this.props.addSong}>Add</button>&nbsp;&nbsp;
-                <input type="reset" className="btn btn-warning" />
+                <button className="btn btn-warning" onClick={this.props.clearForm}>Reset</button>
             </Fragment>
         );
     }

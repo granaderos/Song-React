@@ -1,25 +1,13 @@
 import React, { Component } from "react"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import $ from 'jquery';
-window.$ = window.jQuery = $;
-
-// const base_api = 'http://localhost:8080/rest-song/rest';
 
 class SongTable extends Component {
-
-    editSong = songId => {
-        this.props.getSong(songId, "edit");
-
-        $("#btnSave").show();
-        $("#btnCancelEdit").show();
-        $("#btnAdd").hide();
-    }
 
     render() {
         var songList = this.props.songList;
         return (
-            <table className="table table-hover">
+            <table id="table_songs" className="table table-hover">
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -45,7 +33,7 @@ class SongTable extends Component {
                                             <FontAwesomeIcon icon="trash" />
                                         </i> 
                                         {/* <i title="edit"> */}
-                                        <i title="edit" onClick={() => this.editSong(song.id)}>
+                                        <i title="edit" onClick={() => this.props.getSong(song.id, "edit")}>
                                             <FontAwesomeIcon icon="edit" />
                                         </i>
                                     </td>
