@@ -13,6 +13,7 @@ class Body extends Component {
                         <SongForm 
                             clearForm={this.props.clearForm} 
                             saveUpdatedSong={this.props.saveUpdatedSong} 
+                            cancelEdit={this.props.cancelEdit}
                             addSong={this.props.addSong} 
                             handleChangeData={this.props.handleChangeData} 
                             genreList={this.props.genreList} 

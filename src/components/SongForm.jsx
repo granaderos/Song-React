@@ -60,7 +60,7 @@ class SongForm extends Component {
                     <br />
                 </form>
                 <button id="btnSave" className="btn btn-primary" onClick={this.props.saveUpdatedSong}>Save</button>&nbsp;&nbsp;
-                <button id="btnCancelEdit" className="btn btn-danger" onClick={this.cancelSave}>Cancel</button>
+                <button id="btnCancelEdit" className="btn btn-danger" onClick={this.props.cancelEdit}>Cancel</button>
                 <button id="btnAdd" className="btn btn-primary" onClick={this.props.addSong}>Add</button>&nbsp;&nbsp;
                 <button className="btn btn-warning" onClick={this.props.clearForm}>Reset</button>
             </Fragment>

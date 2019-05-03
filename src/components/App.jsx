@@ -121,6 +121,13 @@ class App extends Component {
       );
   }
 
+  cancelEdit = () => {
+    $("#btnSave").hide();
+    $("#btnCancelEdit").hide();
+    $("#btnAdd").show();
+    this.clearForm(); 
+  }
+
   deleteSong = songId => {
     console.log("SONG TO DELETE " + songId)
     axios.delete(base_api+"/songs/delete/"+songId)
@@ -190,6 +197,7 @@ class App extends Component {
         <Header date={this.state.date.toLocaleTimeString() } />
         <Body clearForm={this.clearForm} 
               saveUpdatedSong={this.saveUpdatedSong} 
+              cancelEdit={this.cancelEdit}
               addSong={this.addSong} 
               handleChangeData={this.handleChangeData}
               getSong={this.getSong} 
