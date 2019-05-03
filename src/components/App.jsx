@@ -24,11 +24,13 @@ library.add(faEdit)
 window.$ = window.jQuery = $;
 
 const base_api = 'http://localhost:8080/rest-song/rest';
+
 const config = {
   headers : {
       'Content-Type' : 'application/json'
   }
 }
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -47,14 +49,13 @@ class App extends Component {
         label: '',
         date: '',
         genre: ''
-    }
+      }
     };
   }
 
   componentDidMount() {
     this.timerID = setInterval(
-      () => this.tick(),
-      1000
+      () => this.tick(), 1000
     );
     
     this.getSongs();  
@@ -62,11 +63,14 @@ class App extends Component {
     this.getArtists();
     this.getLabels();
 
+    $("#btnSave").hide();
+    $("#btnCancelEdit").hide();
+
   }
 
   // Service methods
 
-  clearForm = e => {
+  clearForm = () => {
     $("#id").val("");
     $("#title").val("");
     $("#artist").val("--- select ---");
@@ -91,17 +95,13 @@ class App extends Component {
     e.preventDefault();
 
     var songToAdd = this.state.song;
-
-    console.log('sample');
-    console.log(this);
-
     axios.post(base_api+"/songs/add", songToAdd, config)
-    .then(
-        res => {
+      .then(
+        () => {
           this.getSongs();
           this.clearForm();
         }
-    );
+      );
   }
 
   saveUpdatedSong = (e) => {
@@ -109,25 +109,23 @@ class App extends Component {
     
     console.log("New song data = " + JSON.stringify(this.state.song));
     axios.put(base_api+"/songs/update", this.state.song, config)
-    .then(
-        res => {
-            this.getSongs();
+      .then(
+        () => {
+          this.getSongs();
 
-            $("#btnSave").hide();
-            $("#btnCancelEdit").hide();
-            $("#btnAdd").show();
-
-            this.clearForm();
-            
+          $("#btnSave").hide();
+          $("#btnCancelEdit").hide();
+          $("#btnAdd").show();
+          this.clearForm(); 
         }
-    );
+      );
   }
 
   deleteSong = songId => {
     console.log("SONG TO DELETE " + songId)
     axios.delete(base_api+"/songs/delete/"+songId)
       .then(res => {
-        console.log("DELETED song with ID " + songId + " response = " + res)
+        console.log("DELETED song with ID " + songId + " response = " + JSON.stringify(res));
         this.getSongs();  
       });
   }

@@ -1,21 +1,6 @@
 import React, { Component, Fragment } from "react"
-import axios from "axios";
-
-import $ from 'jquery';
-window.$ = window.jQuery = $;
-
-const base_api = 'http://localhost:8080/rest-song/rest';
 
 class SongForm extends Component {
-
-    constructor(props) {
-        super(props);
-    }
-
-    componentDidMount() {
-        $("#btnSave").hide();
-        $("#btnCancelEdit").hide();
-    }
 
     render() {
         let genreList = this.props.genreList;
@@ -38,7 +23,6 @@ class SongForm extends Component {
                                 );
                             })
                         }
-                        {/* <option value="0">Other</option> */}
                     </select>
                     <div id="div_artist_other">
                         <br />
