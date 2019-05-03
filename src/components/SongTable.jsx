@@ -1,18 +1,23 @@
 import React, { Component } from "react"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import $ from 'jquery';
+window.$ = window.jQuery = $;
 
 // const base_api = 'http://localhost:8080/rest-song/rest';
 
 class SongTable extends Component {
 
     editSong = songId => {
-        let song = this.props.getSong(songId);
-        console.log(JSON.stringify(song));
+        this.props.getSong(songId, "edit");
+
+        $("#btnSave").show();
+        $("#btnCancelEdit").show();
+        $("#btnAdd").hide();
     }
 
     render() {
-        let songList = this.props.songList;
+        var songList = this.props.songList;
         return (
             <table className="table table-hover">
                 <thead>
@@ -35,7 +40,15 @@ class SongTable extends Component {
                                     <td>{song.label}</td>
                                     <td>{song.date}</td>
                                     <td>{song.genre}</td>
-                                    <td><i title="delete" onClick={() => this.props.deleteSong(song.id)}><FontAwesomeIcon icon="trash" /></i> <i title="edit" onClick={this.editSong(song.id)}><FontAwesomeIcon icon="edit" /></i></td>
+                                    <td>
+                                        <i title="delete" onClick={() => this.props.deleteSong(song.id)}>
+                                            <FontAwesomeIcon icon="trash" />
+                                        </i> 
+                                        {/* <i title="edit"> */}
+                                        <i title="edit" onClick={() => this.editSong(song.id)}>
+                                            <FontAwesomeIcon icon="edit" />
+                                        </i>
+                                    </td>
                                 </tr>
                             )
                         })

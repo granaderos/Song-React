@@ -17,15 +17,18 @@ import {
   getArtists,
   getLabels
 } from "../util/service_helper";
-import { timingSafeEqual } from 'crypto';
 
 library.add(faStroopwafel)
 library.add(faTrash)
 library.add(faEdit)
 window.$ = window.jQuery = $;
 
-const base_api = 'http://localhost:8080/rest-song/rest/';
-
+const base_api = 'http://localhost:8080/rest-song/rest';
+const config = {
+  headers : {
+      'Content-Type' : 'application/json'
+  }
+}
 class App extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +40,14 @@ class App extends Component {
       genreList: [],
       artistList: [],
       labelList: [],
-      song: {}
+      song: {
+        id: null,
+        title: '',
+        artist: '',
+        label: '',
+        date: '',
+        genre: ''
+    }
     };
   }
 
@@ -55,21 +65,90 @@ class App extends Component {
 
   // Service methods
 
+  clearForm = e => {
+    $("#id").val("");
+    $("#title").val("");
+    $("#artist").val("");
+    $("#label").val("");
+    $("#date").val("");
+    $("#genre").val("");
+
+  }
+
+  handleChangeData = e => {
+    const {name, value} = e.target;
+
+    this.setState((prevState) => ({
+      song: {
+        ...prevState.song,
+        [name]: value
+      }
+    }));
+  }
+
+  addSong = (e) => {
+    e.preventDefault();
+
+    var songToAdd = this.state.song;
+
+    console.log('sample');
+    console.log(this);
+
+    axios.post(base_api+"/songs/add", songToAdd, config)
+    .then(
+        res => {
+          this.getSongs();
+          this.clearForm();
+        }
+    );
+  }
+
+  saveUpdatedSong = (e) => {
+    e.preventDefault();
+    
+    console.log("New song data = " + JSON.stringify(this.state.song));
+    axios.put(base_api+"/songs/update", this.state.song, config)
+    .then(
+        res => {
+            this.getSongs();
+
+            $("#btnSave").hide();
+            $("#btnCancelEdit").hide();
+            $("#btnAdd").show();
+
+            this.clearForm();
+            
+        }
+    );
+  }
+
   deleteSong = songId => {
     console.log("SONG TO DELETE " + songId)
-    axios.delete(base_api+"songs/delete/"+songId)
-      .then(function(res) {
+    axios.delete(base_api+"/songs/delete/"+songId)
+      .then(res => {
         console.log("DELETED song with ID " + songId + " response = " + res)
-        $("#song_"+songId).remove();
+        this.getSongs();  
       });
   }
 
-  getSong = songId => {
-    axios.get(base_api+"songs/"+songId)
+  getSong = (songId, action) => {
+    axios.get(base_api+"/songs/"+songId)
       .then(res => {
-        this.setState({song: res.data});
-      })
-      return this.state.song;
+        var song = res.data;
+        this.setState({song: song});
+        console.log("set song inside then = " + JSON.stringify(this.state.song));
+
+        if(action == "edit") {
+          // set song details as form values
+          $("#id").val(song.id);
+          $("#title").val(song.title);
+          $("#artist").val(song.artist);
+          $("#label").val(song.label);
+          $("#date").val(song.date);
+          $("#genre").val(song.genre);
+        }
+
+      });
   }
 
   getSongs = () => {
@@ -106,7 +185,7 @@ class App extends Component {
     return (
       <div>
         <Header date={this.state.date.toLocaleTimeString() } />
-        <Body getSong={this.getSong} getSongs={this.getSongs} deleteSong={this.deleteSong} songList={this.state.songList} genreList={this.state.genreList} labelList={this.state.labelList} artistList={this.state.artistList}  />
+        <Body saveUpdatedSong={this.saveUpdatedSong} addSong={this.addSong} handleChangeData={this.handleChangeData} song={this.state.song} getSong={this.getSong} getSongs={this.getSongs} deleteSong={this.deleteSong} songList={this.state.songList} genreList={this.state.genreList} labelList={this.state.labelList} artistList={this.state.artistList}  />
         <Footer />
       </div>
     );
