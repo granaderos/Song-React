@@ -1,3 +1,11 @@
+## Install the following
+### npm install --save bootstrap
+### npm install axios
+### npm i --save @fortawesome/fontawesome-svg-core
+### npm i --save @fortawesome/free-solid-svg-icons
+### npm i --save @fortawesome/react-fontawesome
+### npm install jquery 
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
